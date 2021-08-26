@@ -33,7 +33,7 @@
 							},
 							{
 								"field": "tags['BillingIdentifier']",
-								"notin": "[parameters('billid')]"
+								"notin": "[[parameters('billid')]"
 							}
 						]
                     },
