@@ -4,7 +4,7 @@
     "resources": [
         {
             "type": "Microsoft.Authorization/policyDefinitions",
-            "name": "require-tag-businessidentifier",
+            "name": "require-tag-billingidentifier",
             "apiVersion": "2019-09-01",
             "properties": {
                 "displayName": "Require Billing Identifier Tag",
