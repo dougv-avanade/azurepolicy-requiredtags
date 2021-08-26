@@ -1,0 +1,41 @@
+{
+    "properties": {
+        "displayName": "RestrictComplianceTag",
+        "description": "Requires indexed assets with a Compliance tag to use a value listed in the parameters. Does NOT require a Complaince tag.",
+		"policyType": "Custom",
+        "mode": "Indexed",
+		"metadata": {
+			"version": "0.0.1",
+			"category": "RequiredTags"
+		},
+        "parameters": {
+            "compliance": {
+                "type": "array",
+				"allowedValues": [
+					"GDPR",
+					"HIPAA",
+					"General",
+					"Confidential",
+					"Highly confidential"
+				],
+                "metadata": {
+                    "displayName": "Compliance",
+                    "description": "Value for Compliance tag"
+                }
+            }
+        },
+        "policyRule": {
+            "if": {
+                "allOf": [
+					{
+						"field": "tags['Compliance']",
+						"notin": "[parameters('compliance')]"
+					}
+				]
+            },
+            "then": {
+                "effect": "deny"
+            }
+        }
+    }
+}

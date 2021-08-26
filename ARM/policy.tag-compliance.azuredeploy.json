@@ -1,0 +1,49 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "0.0.1.0",
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "restrict-tag-compliance",
+            "apiVersion": "2019-09-01",
+            "properties": {
+                "displayName": "Restrict Compliance Tag Values",
+                "policyType": "Custom",
+                "description": "Requires indexed assets with a Compliance tag to use a value listed in the parameters. Does NOT require a Complaince tag.",
+                "metadata": {
+                    "category": "RestrictedTags"
+                },
+                "mode": "Indexed",
+                "parameters": {
+                    "compliance": {
+						"type": "string",
+						"allowedValues": [
+							"GDPR",
+							"HIPAA",
+							"General",
+							"Confidential",
+							"Highly confidential"
+						]
+					}
+                },
+                "policyRule": {
+                    "if": {
+                        "allOf": [
+							{
+								"field": "tags['Compliance']",
+								"exists": true
+							},
+							{
+								"field": "tags['Compliance']",
+								"notin": "[[parameters('compliance')]"
+							}
+						]
+                    },
+                    "then": {
+                        "effect": "deny"
+                    }
+                }
+            }
+        }
+    ]
+}

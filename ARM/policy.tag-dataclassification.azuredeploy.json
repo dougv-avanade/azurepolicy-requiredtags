@@ -1,0 +1,49 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "0.0.1.0",
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "require-tag-dataclassification",
+            "apiVersion": "2019-09-01",
+            "properties": {
+                "displayName": "Require DataClassification Tag",
+                "policyType": "Custom",
+                "description": "Requires indexed assets to have a DataClassification tag with a value listed in the parameters.]",
+                "metadata": {
+                    "category": "RequiredTags"
+                },
+                "mode": "Indexed",
+                "parameters": {
+                    "dataclass": {
+						"type": "string",
+						"allowedValues": [
+							"Non-business",
+							"Public",
+							"General",
+							"Confidential",
+							"Highly confidential"
+						]
+					}
+                },
+                "policyRule": {
+                    "if": {
+                        "anyOf": [
+						{
+							"field": "tags['DataClassification']",
+							"exists": false
+						},
+						{
+							"field": "tags['DataClassification']",
+							"notin": "[[parameters('dataclass')]"
+						}
+					]
+                    },
+                    "then": {
+                        "effect": "deny"
+                    }
+                }
+            }
+        }
+    ]
+}

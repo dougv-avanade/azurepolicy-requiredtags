@@ -1,0 +1,38 @@
+{
+    "properties": {
+        "displayName": "RequireBillingID",
+        "description": "Requires indexed assets to have an Billing Identifier tag with a value listed in the parameters",
+		"policyType": "Custom",
+        "mode": "Indexed",
+		"metadata": {
+			"version": "0.0.1",
+			"category": "RequiredTags"
+		},
+        "parameters": {
+            "billid": {
+                "type": "array",
+                "metadata": {
+                    "displayName": "Billing Identifier",
+                    "description": "Value for Billing Identifier tag"
+                }
+            }
+        },
+        "policyRule": {
+            "if": {
+                "anyOf": [
+					{
+						"field": "tags['BillingIdentifier']",
+						"exists": false
+					},
+					{
+						"field": "tags['BillingIdentifier']",
+						"notin": "[parameters('billid')]"
+					}
+				]
+            },
+            "then": {
+                "effect": "deny"
+            }
+        }
+    }
+}

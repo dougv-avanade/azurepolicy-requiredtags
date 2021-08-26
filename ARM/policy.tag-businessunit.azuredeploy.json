@@ -1,0 +1,47 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "0.0.1.0",
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "require-tag-businessunit",
+            "apiVersion": "2019-09-01",
+            "properties": {
+                "displayName": "Require BusinessUnit Tag",
+                "policyType": "Custom",
+                "description": "Requires indexed assets to have a BusinessUnit tag with a value listed in the parameters.",
+                "metadata": {
+                    "category": "RequiredTags"
+                },
+                "mode": "Indexed",
+                "parameters": {
+                    "unit": {
+						"type": "string",
+						"allowedValues": [
+							"Digital Services",
+							"Wholesale",
+							"Domestic"
+						]
+					}
+                },
+                "policyRule": {
+                    "if": {
+                        "anyOf": [
+							{
+								"field": "tags['BusinessUnit']",
+								"exists": false
+							},
+							{
+								"field": "tags['BusinessUnit']",
+								"notin": "[[parameters('unit')]"
+							}
+						]
+                    },
+                    "then": {
+                        "effect": "deny"
+                    }
+                }
+            }
+        }
+    ]
+}

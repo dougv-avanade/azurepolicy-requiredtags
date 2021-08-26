@@ -1,0 +1,25 @@
+{
+    "properties": {
+        "displayName": "RequireApplicationTagAlternate",
+        "description": "Requires indexed assets to have an Application tag",
+		"policyType": "Custom",
+        "mode": "Indexed",
+		"metadata": {
+			"version": "0.0.1",
+			"category": "RequiredTags"
+		}
+        "policyRule": {
+            "if": {
+                "allOf": [
+					{
+						"field": "tags['Application']",
+						"exists": false
+					}
+				]
+            },
+            "then": {
+                "effect": "deny"
+            }
+        }
+    }
+}

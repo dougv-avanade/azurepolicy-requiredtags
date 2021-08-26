@@ -1,0 +1,45 @@
+{
+    "properties": {
+        "displayName": "RequireBusinessCriticalityTag",
+        "description": "Requires indexed assets to have an BusinessCriticality tag with a value listed in the parameters",
+		"policyType": "Custom",
+        "mode": "Indexed",
+		"metadata": {
+			"version": "0.0.1",
+			"category": "RequiredTags"
+		},
+        "parameters": {
+            "criticality": {
+                "type": "array",
+				"allowedValues": [
+					"Low",
+					"Medium",
+					"High",
+					"Business unit-critical",
+					"Mission-critical"
+				],
+                "metadata": {
+                    "displayName": "BusinessCriticality",
+                    "description": "Value for BusinessCriticality tag"
+                }
+            }
+        },
+        "policyRule": {
+            "if": {
+                "anyOf": [
+					{
+						"field": "tags['BusinessCriticality']",
+						"exists": false
+					},
+					{
+						"field": "tags['BusinessCriticality']",
+						"notin": "[parameters('criticality')]"
+					}
+				]
+            },
+            "then": {
+                "effect": "deny"
+            }
+        }
+    }
+}

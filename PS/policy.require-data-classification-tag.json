@@ -1,0 +1,45 @@
+{
+    "properties": {
+        "displayName": "RequireDataClassificationTag",
+        "description": "Requires indexed assets to have an DataClassification tag with a value listed in the parameters",
+		"policyType": "Custom",
+        "mode": "Indexed",
+		"metadata": {
+			"version": "0.0.1",
+			"category": "RequiredTags"
+		},
+        "parameters": {
+            "dataclass": {
+                "type": "array",
+				"allowedValues": [
+					"Non-business",
+					"Public",
+					"General",
+					"Confidential",
+					"Highly confidential"
+				],
+                "metadata": {
+                    "displayName": "DataClassification",
+                    "description": "Value for DataClassification tag"
+                }
+            }
+        },
+        "policyRule": {
+            "if": {
+                "anyOf": [
+					{
+						"field": "tags['DataClassification']",
+						"exists": false
+					},
+					{
+						"field": "tags['DataClassification']",
+						"notin": "[parameters('dataclass')]"
+					}
+				]
+            },
+            "then": {
+                "effect": "deny"
+            }
+        }
+    }
+}

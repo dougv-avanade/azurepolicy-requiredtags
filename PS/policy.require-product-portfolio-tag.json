@@ -1,0 +1,44 @@
+{
+    "properties": {
+        "displayName": "RequireProductPortfolioTag",
+        "description": "Requires indexed assets to have an ProductPortfolio tag with a value listed in the parameters",
+		"policyType": "Custom",
+        "mode": "Indexed",
+		"metadata": {
+			"version": "0.0.1",
+			"category": "RequiredTags"
+		},
+        "parameters": {
+            "portfolio": {
+                "type": "array",
+				"allowedValues": [
+					"Customer Portfolio",
+					"Operational Management Portfolio",
+					"Resource Management Portfolio",
+					"Enterprise Services"
+				],
+                "metadata": {
+                    "displayName": "Portfolio",
+                    "description": "Value for ProductPortfolio tag"
+                }
+            }
+        },
+        "policyRule": {
+            "if": {
+                "anyOf": [
+					{
+						"field": "tags['ProductPortfolio']",
+						"exists": false
+					},
+					{
+						"field": "tags['ProductPortfolio']",
+						"notin": "[parameters('portfolio')]"
+					}
+				]
+            },
+            "then": {
+                "effect": "deny"
+            }
+        }
+    }
+}

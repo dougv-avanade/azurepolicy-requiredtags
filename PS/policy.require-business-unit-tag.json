@@ -1,0 +1,43 @@
+{
+    "properties": {
+        "displayName": "RequireBusinessUnitTag",
+        "description": "Requires indexed assets to have an BusinessUnit tag with a value listed in the parameters",
+		"policyType": "Custom",
+        "mode": "Indexed",
+		"metadata": {
+			"version": "0.0.1",
+			"category": "RequiredTags"
+		},
+        "parameters": {
+            "unit": {
+                "type": "array",
+				"allowedValues": [
+					"Digital Services",
+					"Wholesale",
+					"Domestic"
+				],
+                "metadata": {
+                    "displayName": "BusinessUnit",
+                    "description": "Value for BusinessUnit tag"
+                }
+            }
+        },
+        "policyRule": {
+            "if": {
+                "anyOf": [
+					{
+						"field": "tags['BusinessUnit']",
+						"exists": false
+					},
+					{
+						"field": "tags['BusinessUnit']",
+						"notin": "[parameters('unit')]"
+					}
+				]
+            },
+            "then": {
+                "effect": "deny"
+            }
+        }
+    }
+}

@@ -1,0 +1,38 @@
+{
+    "properties": {
+        "displayName": "RequireApplicationTag",
+        "description": "Requires indexed assets to have an Application tag with a value listed in the parameters",
+		"policyType": "Custom",
+        "mode": "Indexed",
+		"metadata": {
+			"version": "0.0.1",
+			"category": "RequiredTags"
+		},
+        "parameters": {
+            "app": {
+                "type": "array",
+                "metadata": {
+                    "displayName": "Application",
+                    "description": "Value for Application tag"
+                }
+            }
+        },
+        "policyRule": {
+            "if": {
+                "anyOf": [
+					{
+						"field": "tags['Application']",
+						"exists": false
+					},
+					{
+						"field": "tags['Application']",
+						"notin": "[parameters('app')]"
+					}
+				]
+            },
+            "then": {
+                "effect": "deny"
+            }
+        }
+    }
+}

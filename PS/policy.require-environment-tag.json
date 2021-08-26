@@ -1,0 +1,42 @@
+{
+    "properties": {
+        "displayName": "RequireEnvironmentTag",
+        "description": "Requires indexed assets to have an Environment tag with a value listed in the parameters",
+		"policyType": "Custom",
+        "mode": "Indexed",
+		"metadata": {
+			"version": "0.0.1",
+			"category": "RequiredTags"
+		},
+        "parameters": {
+            "env": {
+                "type": "array",
+                "allowedValues": [
+                    "Prod",
+                    "Test"
+                ],
+                "metadata": {
+                    "displayName": "Environment",
+                    "description": "Value for Environment tag"
+                }
+            }
+        },
+        "policyRule": {
+            "if": {
+                "anyOf": [
+					{
+						"field": "tags['Environment']",
+						"exists": false
+					},
+					{
+						"field": "tags['Environment']",
+						"notin": "[parameters('env')]"
+					}
+				]
+            },
+            "then": {
+                "effect": "deny"
+            }
+        }
+    }
+}

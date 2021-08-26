@@ -1,0 +1,49 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "0.0.1.0",
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "require-tag-businesscriticality",
+            "apiVersion": "2019-09-01",
+            "properties": {
+                "displayName": "Require Business Criticality Tag",
+                "policyType": "Custom",
+                "description": "Requires indexed assets to have a BusinessCriticality tag with a value listed in the parameters.",
+                "metadata": {
+                    "category": "RequiredTags"
+                },
+                "mode": "Indexed",
+                "parameters": {
+                    "criticality": {
+						"type": "string",
+						"allowedValues": [
+							"Low",
+							"Medium",
+							"High",
+							"Business unit-critical",
+							"Mission-critical"
+						]
+					}
+                },
+                "policyRule": {
+                    "if": {
+                        "anyOf": [
+							{
+								"field": "tags['BusinessCriticality']",
+								"exists": false
+							},
+							{
+								"field": "tags['BusinessCriticality']",
+								"notin": "[[parameters('criticality')]"
+							}
+						]
+                    },
+                    "then": {
+                        "effect": "deny"
+                    }
+                }
+            }
+        }
+    ]
+}

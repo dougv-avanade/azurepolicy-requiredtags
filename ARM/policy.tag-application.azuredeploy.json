@@ -1,0 +1,33 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "0.0.1.0",
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "require-tag-application",
+            "apiVersion": "2019-09-01",
+            "properties": {
+                "displayName": "Require Application Tag",
+                "policyType": "Custom",
+                "description": "Requires indexed assets to have an Application tag.",
+                "metadata": {
+                    "category": "RequiredTags"
+                },
+                "mode": "Indexed",
+                "policyRule": {
+                    "if": {
+                        "allOf": [
+							{
+								"field": "tags['Application']",
+								"exists": false
+							}
+						]
+                    },
+                    "then": {
+                        "effect": "deny"
+                    }
+                }
+            }
+        }
+    ]
+}
