@@ -1,5 +1,5 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
     "contentVersion": "0.0.1.0",
     "resources": [
         {
@@ -16,7 +16,7 @@
                 "mode": "Indexed",
                 "parameters": {
                     "unit": {
-						"type": "string",
+						"type": "array",
 						"allowedValues": [
 							"Digital Services",
 							"Wholesale",
